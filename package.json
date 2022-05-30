@@ -1,0 +1,32 @@
+{
+  "name": "7.5-puppeteer-ii",
+  "version": "1.0.0",
+  "description": "7.5-Puppeeter-II",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "cucumber": "cucumber-js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shade1471/7.5-Puppeteer-II.git"
+  },
+  "keywords": [
+    "cucumber",
+    "puppeeter",
+    "jest"
+  ],
+  "author": "Andrey Gribanov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shade1471/7.5-Puppeeter-II/issues"
+  },
+  "homepage": "https://github.com/shade1471/7.5-Puppeeter-II#readme",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "cucumber": "^6.0.7",
+    "jest": "^28.1.0",
+    "jest-puppeteer": "^6.1.0",
+    "puppeteer": "^14.1.1"
+  }
+}
