@@ -1,12 +1,18 @@
+const { expect } = require("chai");
 const {
   clickElement,
   putText,
   getText,
   orderPlace,
+  checkStatus,
 } = require("./lib/commands.js");
 const { generateName } = require("./lib/util.js");
 
 let page;
+
+function needPlace(row, seat) {
+  return `.buying-scheme__wrapper :nth-child(${row}) :nth-child(${seat})`;
+}
 
 beforeEach(async () => {
   page = await browser.newPage();
@@ -23,43 +29,20 @@ describe("Netology.ru tests", () => {
     await page.goto("http://qamid.tmweb.ru/client/index.php");
   });
 
-  test.only("Should order ticket for Movie-1 at 19:00", async () => {
+  test("Should order ticket for Movie-1 at 19:00", async () => {
     await clickElement(page, '[data-seance-id="93"]');
-
-    await orderPlace(page, 1, 3);
-
-    // let firstPlaceFirsRow =
-    //   ".buying-scheme__wrapper :nth-child(1) :nth-child(1)";
-    // let placeSelected = firstPlaceFirsRow + ".buying-scheme__chair_selected";
-
-    //await clickElement(page, firstPlaceFirsRow);
-    // await page.waitForSelector(placeSelected);
-
+    await clickElement(page, needPlace(1, 5));
     await clickElement(page, "button.acceptin-button"); //Нажать забронировать
-
-    // let timeMovie = await page.$eval(
-    //   ".ticket__start",
-    //   (element) => element.textContent
-    // );
-    // await expect(timeMovie).toEqual("19:00");
-
-    // await clickElement(page, ".acceptin-button"); //Нажать забронировать
-
-    //await p
-
-    // await clickElement(page, first);
-
-    // await Wai;
-
-    // console.log("Page title: " + title2);
-    // const pageList = await browser.newPage();
-    // await pageList.goto("https://netology.ru/navigation");
-    // await pageList.waitForSelector("h1");
+    let timeMovie = await getText(page, ".ticket__start");
+    expect(timeMovie).equal("19:00");
+    await clickElement(page, ".acceptin-button");
   });
 
-  test("The first link text 'Медиа Нетологии'", async () => {
-    const actual = await getText(page, "header a + a");
-    expect(actual).toContain("Медиа Нетологии");
+  test.only("The second test should to check that seat is not free", async () => {
+    await clickElement(page, '[data-seance-id="93"]');
+    await clickElement(page, needPlace(1, 5));
+    await clickElement(page, "button.acceptin-button");
+    await page.waitForSelector(".ticket__check-title");
   });
 
   test("The first link leads on 'Медиа' page", async () => {
