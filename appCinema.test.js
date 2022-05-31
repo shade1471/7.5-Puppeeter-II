@@ -1,4 +1,3 @@
-const { clickElement, putText, getText } = require("./lib/commands.js");
 const {
   orderTickets,
   checkSuccess,
@@ -26,7 +25,7 @@ describe("Service for Movie tickets order", () => {
   });
 
   test("Should order one ticket for Movie-1 tomorrow", async () => {
-    await orderTickets(page, tomorrow, movieTime, 3, 1);
+    await orderTickets(page, tomorrow, movieTime, 5, 10);
     await checkSuccess(
       page,
       "Покажите QR-код нашему контроллеру для подтверждения бронирования."
@@ -35,6 +34,14 @@ describe("Service for Movie tickets order", () => {
 
   test("Should order three tickets for Movie-1 in a week", async () => {
     await orderTickets(page, oneWeek, movieTime, 6, 1, 2, 3);
+    await checkSuccess(
+      page,
+      "Покажите QR-код нашему контроллеру для подтверждения бронирования."
+    );
+  });
+
+  test("Should try to order ticket for Movie-1 if seat is taken already", async () => {
+    await orderTickets(page, tomorrow, movieTime, 5, 10);
     await checkSuccess(
       page,
       "Покажите QR-код нашему контроллеру для подтверждения бронирования."
