@@ -1,5 +1,9 @@
-Feature: Search a course
-    Scenario: Should search by text
-        Given user is on "/navigation" page
-        When user search by "тестировщик"
-        Then user sees the course suggested "Тестировщик ПО"
+Feature: Booking a movie-1 ticket for tomorrow
+    Scenario: The user must select a seat and order a ticket
+        Given user is on "/index.php" page
+        When user select day and movie and then select 1 row and 4 seat and click button to book
+        Then user received confirmation and gr-code
+    Scenario: The user wants to check if the seat is booked
+        Given user is on "/index.php" page
+        When user select day and movie and then try to select 1 row and 4 seat and sees that seat is taken
+        Then user go back to main "/index.php" page
