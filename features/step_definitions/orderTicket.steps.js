@@ -37,19 +37,33 @@ Given("user is on {string} page", async function (string) {
   });
 });
 
-When("user select day and movie", async function () {
-  await selectDateTime(this.page, tomorrow, movieTime);
+When("user select {int}-th day and movie", async function (int1) {
+  await selectDateTime(
+    this.page,
+    `nav.page-nav > a:nth-child(${int1})`,
+    movieTime
+  );
 });
 
 When("select and book {int} row and {int} seat", async function (int1, int2) {
   await orderTickets(this.page, int1, int2);
 });
 
-When("see that {int} row and {int} seat is taken", async function (int1, int2) {
-  await checkSeatIsTaken(this.page, int1, int2);
-});
+When(
+  "select and book {int} row and {int},{int},{int} seats",
+  async function (int1, int2, int3, int4) {
+    await orderTickets(this.page, int1, int2, int3, int4);
+  }
+);
 
-Then("user received confirmation and gr-code", async function () {
+When(
+  "sees that {int} row and {int} seat is taken",
+  async function (int1, int2) {
+    await checkSeatIsTaken(this.page, int1, int2);
+  }
+);
+
+Then("user received confirmation and qr-code", async function () {
   const actual = await getText(this.page, ticketHint);
   expect(actual).contain(confirmingText);
 });
