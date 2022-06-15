@@ -26,7 +26,7 @@ describe("Service for Movie tickets order", () => {
 
   test("Should order one ticket for Movie-1 tomorrow", async () => {
     await selectDateTime(page, tomorrow, movieTime);
-    await orderTickets(page, 1, 10);
+    await orderTickets(page, 1, 2);
     const actual = await getText(page, ticketHint);
     expect(actual).toContain(confirmingText);
   });
@@ -41,21 +41,22 @@ describe("Service for Movie tickets order", () => {
   test("Should try to order ticket for Movie-1 if seat is taken already", async () => {
     await expect(async () => {
       await selectDateTime(page, tomorrow, movieTime);
-      await orderTickets(page, 1, 10);
+      await orderTickets(page, 1, 2);
     }).rejects.toThrowError("Seat(s) is taken");
   });
 
-  test.only("Check if the place is taken after ordering ", async () => {
+  test("Check if the place is taken after ordering ", async () => {
+    let row = 2;
+    let seat = 10;
     await selectDateTime(page, oneWeek, movieTime);
-    await orderTickets(page, 1, 7);
-
+    await orderTickets(page, row, seat);
     await page.goto("http://qamid.tmweb.ru/client/index.php");
     await selectDateTime(page, oneWeek, movieTime);
-    await checkSeatIsTaken(page, 1, 10);
-    const buttonStatus = await page.$eval(
-      ".acceptin-button",
-      (el) => el.disabled
+    await checkSeatIsTaken(page, row, seat);
+    const classExist = await page.$eval(
+      `div.buying-scheme__wrapper > div:nth-child(${row}) > span:nth-child(${seat})`,
+      (el) => el.classList.contains("buying-scheme__chair_taken")
     );
-    expect(buttonStatus).toEqual(true);
+    expect(classExist).toEqual(true);
   });
 });

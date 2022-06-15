@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const chai = require("chai");
 const expect = chai.expect;
-const { Given, When, And, Then, Before, After } = require("cucumber");
+const { Given, When, Then, Before, After } = require("cucumber");
 const {
   selectDateTime,
   orderTickets,
@@ -57,9 +57,15 @@ When(
 );
 
 When(
-  "sees that {int} row and {int} seat is taken",
+  "sees that {int} row and {int} seat is taken trying select them",
   async function (int1, int2) {
     await checkSeatIsTaken(this.page, int1, int2);
+    try {
+      await orderTickets(this.page, int1, int2);
+    } catch (error) {
+      expect(error).to.be.an("error");
+      expect(error.message).to.be.equal("Seat(s) is taken");
+    }
   }
 );
 
