@@ -8,7 +8,7 @@ const { getText } = require("./lib/commands");
 let page;
 let tomorrow = "nav.page-nav > a:nth-child(2)"; // Билеты на завтра
 let oneWeek = "nav.page-nav > a:nth-child(7)"; // Билеты через неделю
-let movieTime = "[data-seance-id='94']"; // 14:00, Hercules, Movie1
+let movieTime = "[data-seance-id='94']"; // 14:00, Hercules
 let ticketHint = "p.ticket__hint";
 let confirmingText =
   "Покажите QR-код нашему контроллеру для подтверждения бронирования.";
@@ -46,7 +46,7 @@ describe("Service for Movie tickets order", () => {
   });
 
   test("Check if the place is taken after ordering ", async () => {
-    let row = 2;
+    let row = 3;
     let seat = 10;
     await selectDateTime(page, oneWeek, movieTime);
     await orderTickets(page, row, seat);
